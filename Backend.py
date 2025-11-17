@@ -50,7 +50,7 @@ class UDPSender:
         while(self.running):
             headers = b'\xAA\xEE\x00\x00' #start with the headers
             payload = b''
-            for module in self.modules: #for loop for every module in the array that was typed in
+            for module in self.modules: #loop for every module in the array that was typed in
                 if(self.pattern_size==-1):
                     module_size = os.path.getsize(str(module) + ".txt")
                     read_file = True

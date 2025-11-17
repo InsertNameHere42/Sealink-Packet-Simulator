@@ -4,6 +4,7 @@ import sys
 from PyQt6.QtWidgets import (QApplication, QWidget, QCheckBox, QVBoxLayout, QHBoxLayout, QPushButton, QLineEdit, QLabel, QSpinBox, QTextEdit)
 from PyQt6.QtCore import QThread, pyqtSignal
 from Backend import UDPSender
+from SimulateTCPReceiver import TCPReceiver
 
 
 
@@ -36,6 +37,7 @@ class MainWindow(QWidget): #This class handles creating the GUI
         super().__init__()
         self.setWindowTitle("UDP Simulator")
         self.thread = None
+        self.receiver = TCPReceiver()
         
         v_layout = QVBoxLayout()
         h_box1 = QHBoxLayout()
@@ -62,6 +64,8 @@ class MainWindow(QWidget): #This class handles creating the GUI
         h_box2.addWidget(QLabel("Load From File:"))
         self.modules_input = QLineEdit()
         h_box2.addWidget(self.modules_input)
+        self.TCP_input = QPushButton("Load from packet?")
+        h_box2.addWidget(self.TCP_input)
         
         
         h_box3 = QHBoxLayout()
@@ -108,7 +112,15 @@ class MainWindow(QWidget): #This class handles creating the GUI
         self.setLayout(v_layout)
         
         self.start_stop_btn.clicked.connect(self.toggle_sending)
+        self.TCP_input.clicked.connect(self.TCP_update)
 
+    
+    def TCP_update(self):
+        TCP_modules = self.receiver.get_modules()
+        TCP_rate = self.receiver.get_rate()
+        for i in range(len(self.mod_checkboxes)):
+            self.mod_checkboxes[i].setChecked(TCP_modules[i])
+        self.rate_input.setValue(TCP_rate)
         
     def toggle_sending(self): #Pressing the start/stop button calls this method to create a SenderThread to start sending data to the backend.
         if self.sending:
