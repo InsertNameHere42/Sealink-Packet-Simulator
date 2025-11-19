@@ -44,8 +44,6 @@ class MainWindow(QWidget):
         button_line.addWidget(self.write_button)
         self.read_button = QPushButton("Read")
         button_line.addWidget(self.read_button)
-        self.connect_button = QPushButton("Connect")
-        button_line.addWidget(self.connect_button)
         v_layout.addLayout(button_line)
         
         h_layout.addLayout(v_layout)

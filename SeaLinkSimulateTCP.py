@@ -7,12 +7,12 @@ import os
 
 def write_payload(modules, rate):
     payload_mod = b'\x40' + bytes([int(b) for b in modules])
-    payload_rate = b'\x41' + bytes([rate])
+    payload_rate = b'\x41' + struct.pack('!H', rate)
     payload = payload_mod + payload_rate #not sure if this is how its supposed to be formatted but I can change later
     return payload
 def read_payload(modules, rate): #what does read do other than different header??
     payload_mod = b'\x40' + bytes([int(b) for b in modules])
-    payload_rate = b'\x41' + bytes([rate])
+    payload_rate = b'\x41' + struct.pack('!H', rate)
     payload = payload_mod + payload_rate 
     return payload
     

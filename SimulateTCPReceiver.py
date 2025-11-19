@@ -34,15 +34,19 @@ def parse_payload(payload):
     i = 0
     while i < len(payload):
         cmd = payload[i]
-        i+=1
+        i += 1
         if cmd == 0x40:
             while i < len(payload) and payload[i] not in (0x40, 0x41):
-                modules.append(bool(payload[i]))
+                modules.append(payload[i] != 0)
                 i += 1
         elif cmd == 0x41:
-            if i < len(payload):
-                rate = payload[i]
-                i += 1
+            if i + 1 < len(payload):
+                rate = struct.unpack('!H', payload[i:i+2])[0]
+                i += 2
+            else:
+                print("Payload too short for rate")
+                rate = None
+                break
         else:
             print(f"Unknown command code: {cmd}")
             break

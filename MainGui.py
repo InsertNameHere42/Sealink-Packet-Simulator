@@ -43,6 +43,9 @@ class ReceiverThread(QThread):
         except Exception as e:
             self.log.emit(f"Error {e}")
         self.log.emit("Receiver Stopped")
+        self.receive_TCP.setText("Stop Receiving TCP?")
+        self.receiving = False
+        
     
     def stop(self):
         if self.receiver:
