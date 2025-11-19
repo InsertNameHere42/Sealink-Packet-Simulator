@@ -5,9 +5,12 @@ sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--port', type = int, required = True) 
+    parser.add_argument('--port', type = int, required = False) 
     args = parser.parse_args()
-    port = args.port
+    if args.port:
+        port = args.port
+    else:
+        port = 6550
     sock.bind(('127.0.0.1', port))
     print(f"Listening on UDP port {port}")
     while(True):

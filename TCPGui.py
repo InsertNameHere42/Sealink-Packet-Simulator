@@ -11,7 +11,6 @@ class MainWindow(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("TCP Command Generator")
-        self.thread = None
         h_layout = QHBoxLayout()
         
         h_layout.addWidget(QLabel("Select Modules: "), alignment=Qt.AlignmentFlag.AlignTop)
@@ -45,6 +44,8 @@ class MainWindow(QWidget):
         button_line.addWidget(self.write_button)
         self.read_button = QPushButton("Read")
         button_line.addWidget(self.read_button)
+        self.connect_button = QPushButton("Connect")
+        button_line.addWidget(self.connect_button)
         v_layout.addLayout(button_line)
         
         h_layout.addLayout(v_layout)
@@ -53,8 +54,13 @@ class MainWindow(QWidget):
         self.sender = TCPSender() 
         self.write_button.clicked.connect(lambda: self.sender.send(self.get_checkboxes(), self.rate_input.value(), False))
         self.read_button.clicked.connect(lambda: self.sender.send(self.get_checkboxes(), self.rate_input.value(), True))
-
-
+        
+        
+        self.sender.on_disconnect = self.handle_disconnect
+    
+    def handle_disconnect(self):
+        print("Closing GUI because TCP connection was aborted")
+        
     def closeEvent(self, event):
         # This is called when the window is closing
         if hasattr(self, "sender") and self.sender:

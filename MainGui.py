@@ -26,18 +26,41 @@ class SenderThread(QThread): #The code that handles sending data to the backend.
             self.log.emit(f"Error: {e}")
         self.log.emit("Sender Stopped")
         
-    def stop(self):
+    def stop(self): 
         if self.sender:
             self.sender.stop()
+    
+class ReceiverThread(QThread):
+    log = pyqtSignal(str)
+    def __init__(self):
+        super().__init__()
+        self.receiver = TCPReceiver()
+        
+    def run(self):
+        self.log.emit("Receiver Started.")
+        try:
+            self.receiver.start()
+        except Exception as e:
+            self.log.emit(f"Error {e}")
+        self.log.emit("Receiver Stopped")
+    
+    def stop(self):
+        if self.receiver:
+            self.receiver.stop()
+        self.quit()
+        self.wait()
+        
 
         
 class MainWindow(QWidget): #This class handles creating the GUI
     def __init__(self):
         self.sending = False
+        self.receiving = False
         super().__init__()
         self.setWindowTitle("UDP Simulator")
         self.thread = None
-        self.receiver = TCPReceiver()
+        self.rThread = None #Receiver Thread
+        
         
         v_layout = QVBoxLayout()
         h_box1 = QHBoxLayout()
@@ -64,6 +87,8 @@ class MainWindow(QWidget): #This class handles creating the GUI
         h_box2.addWidget(QLabel("Load From File:"))
         self.modules_input = QLineEdit()
         h_box2.addWidget(self.modules_input)
+        self.receive_TCP = QPushButton("Receive TCP?")
+        h_box2.addWidget(self.receive_TCP)
         self.TCP_input = QPushButton("Load from packet?")
         h_box2.addWidget(self.TCP_input)
         
@@ -111,16 +136,32 @@ class MainWindow(QWidget): #This class handles creating the GUI
         v_layout.addLayout(h_box3)
         self.setLayout(v_layout)
         
+        self.receive_TCP.clicked.connect(self.toggle_receiving)
         self.start_stop_btn.clicked.connect(self.toggle_sending)
         self.TCP_input.clicked.connect(self.TCP_update)
 
-    
+
     def TCP_update(self):
-        TCP_modules = self.receiver.get_modules()
-        TCP_rate = self.receiver.get_rate()
-        for i in range(len(self.mod_checkboxes)):
-            self.mod_checkboxes[i].setChecked(TCP_modules[i])
-        self.rate_input.setValue(TCP_rate)
+        if self.receiving and self.rThread.receiver.get_modules() != None and self.rThread.receiver.get_rate() !=None:
+            TCP_modules = self.rThread.receiver.get_modules()
+            TCP_rate = self.rThread.receiver.get_rate()
+            for i in range(len(self.mod_checkboxes)):
+                self.mod_checkboxes[i].setChecked(TCP_modules[i])
+            self.rate_input.setValue(TCP_rate)
+        
+    def toggle_receiving(self):
+        if self.receiving:
+            if self.rThread:
+                self.rThread.stop()
+            self.receiving = False
+            self.receive_TCP.setText("Receive TCP?")
+        else:
+            self.rThread = ReceiverThread()
+            self.rThread.log.connect(self.log_area.append)
+            self.rThread.start()
+            self.receiving = True
+            self.receive_TCP.setText("Stop Receiving TCP?")
+            
         
     def toggle_sending(self): #Pressing the start/stop button calls this method to create a SenderThread to start sending data to the backend.
         if self.sending:
