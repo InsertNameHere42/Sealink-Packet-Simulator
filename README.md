@@ -1,16 +1,29 @@
 "# UDPSimulator" 
 
-How the frontend works:
-    When the program begins, a GUI will be created which will give the user an intuitive way to configure how they want to create and send their UDP packets. They will be given choices on whether they want to create packets off of a premade table, or from files that the user can provide. They can also select the ports to send the packets to and the rate at which packets will be sent.
-    The packet sending is handled in it's own seperate thread as to allow the rest of the program to run at normal speed while the packet sending thread deals with delays due to the user-inputted rate.
-    When the start button is pressed, the program will create the packet-sending thread and pass the modules, rate, ports, and pattern size as parameters to create packets out of.
+Project Objectives:
+    Create an application with the ability to create and send UDP packets to an IP (in this case, the local host) with user-inputted ports to send the packets to.
+    The payload of the packets will be generated off of user-decided modules which contain a character.
+    Additionally, the program will be able to read files and use the file's name as the module number in the payload, the size of the file as the pattern size, and the contents of the file as the pattern character.
+    The application will include a GUI for user-friendliness.
+    The user will be able to connect to the existing application with an external application and TCP connection. Which will be able to send packets to the UDP applications that decide the modules to select and the rate at which to send them.
 
-How the backend works:
-    When packets begin to get send. The backend will create a new UDPSender object which will take in the modules, rate, ports, and pattern size. If the pattern size is -1, it will access modules through files of given file names. If the pattern size isn't equal to -1. It will access modules through a premade table of module numbers and characters.
+Software Structure:
+    The software is structured through multiple files and makes use of inheritance in order to create a cleaner codebase that is easier to manage and read. (not really sure what to put for structure)
 
-    How the packets are created:
-        First, the program will create the headers which are cnstant no matter the input.
-        The program will then begin creating the payload which is done through accessing a dictionary of file names to pattern characters if reading from files. Or accessing a premade array to get a module number and pattern character. The pattern size is determined by either the size of the file being read, or the user-provided size if not reading from a file. The program will create the payload out of the three values: Module Number, Pattern Size, and Pattern Character multiplied by Pattern Size, and this will be done for each module number provided.
-        After creating the payload, the program can find the size of the payload and append it to the headers. Which the payload can thus be appended to as well.
-        Finally, the program will do a Cyclic Redundancy Check on the packet at this point and append the output onto the packet.
-        After the CRC is appended, the packet is finished and gets sent to every port given at a given rate.
+Software Used:
+    Python 3.11
+    Visual Studio Code 1.105.1
+    Git 2.51.2
+    
+Packet Stream Explanation:
+    The UDP application will generate and send UDP packets at a constant, user inputted, rate to select ports.
+    The TCP application will only generate and send a single packet at a time as the program will store the last sent command and does not need a constant stream of them.
+
+External Libraries Used:
+    PyQt6
+
+User Manual:
+    The executables are held in the "dist" folder. The main application is the MainGui.exe file. It will open up a GUI which allows the user to configure how the program will generate the UDP packets. The user must decide whether to load packets from a file or from the given modules 1-5 by selecting the checkboxes titled "Pattern Size:" or "Load From File:". The user must also select which ports to send the packets to and they can also configure the rate (in milliseconds) that the packets will be sent. The user can then start sending packets.
+    The TCPGui folder in "dist" contains an executable which, if the MainGui application is receiving TCP packets, will form a TCP connection with the main program and open a GUI to select which modules to use and the rate remotely. After sending the TCP Packet, pressing the "Load From Packet?" button in the main GUI will load the configuration that was sent through the TCPGui application.
+    This repository also includes a UDP receiver application which can be used to test the applications. If run through the executable, it will default to listening to port 6550. However, if run in the console with the comman "python SimulateUDPReceiver.py", the user can input an argument to the end of the line formatted as "--port {input}" for the user to select a specific port to listen to.
+ 
