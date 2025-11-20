@@ -66,10 +66,13 @@ class MainWindow(QWidget): #This class handles creating the GUI
         
         v_layout = QVBoxLayout()
         h_box1 = QHBoxLayout()
-        h_box1.addWidget(QLabel("Select Modules:"))
+        module_label = QLabel("Select Modules:")
+        module_label.setStyleSheet("font-size: 16px;") 
+        h_box1.addWidget(module_label)
         self.mod_checkboxes = []
         for i in range (UDPSender.get_num_available_chars()):
             checkbox = QCheckBox(str(i+1), self)
+            checkbox.setStyleSheet("font-size: 16px;")
             self.mod_checkboxes.append(checkbox)
             h_box1.addWidget(checkbox)
 
@@ -79,15 +82,19 @@ class MainWindow(QWidget): #This class handles creating the GUI
         h_box2.setSpacing(5)
         self.no_file_checkbox = QCheckBox(self)
         h_box2.addWidget(self.no_file_checkbox)
-        h_box2.addWidget(QLabel("Pattern Size: "))
+        pattern_size_label = QLabel("Pattern Size:")
+        pattern_size_label.setStyleSheet("font-size: 16px;") 
+        h_box2.addWidget(pattern_size_label)
         self.pattern_size_input = QSpinBox()
         self.pattern_size_input.setRange(0, 99)
         self.pattern_size_input.setValue(20)
+        self.pattern_size_input.setStyleSheet("border: 2px solid #4FE0DD; background: white;")
         h_box2.addWidget(self.pattern_size_input)
         self.file_checkbox = QCheckBox(self)
         h_box2.addWidget(self.file_checkbox)
         h_box2.addWidget(QLabel("Load From File:"))
         self.modules_input = QLineEdit()
+        self.modules_input.setStyleSheet("border: 2px solid #4FE0DD; background: white;")
         h_box2.addWidget(self.modules_input)
         self.receive_TCP = QPushButton("Receive TCP?")
         self.receive_TCP.setStyleSheet("background-color: lime;")
@@ -105,11 +112,13 @@ class MainWindow(QWidget): #This class handles creating the GUI
         for i in range(4):
             temp_h_box = QHBoxLayout()
             temp_checkbox = QCheckBox(f"Port {i+1}", self)
+            temp_checkbox.setStyleSheet("font-size: 16px;")
             self.port_checkboxes.append(temp_checkbox)
             temp_h_box.addWidget(temp_checkbox)
             port_option = QSpinBox()
             port_option.setRange(1, 65535)
             port_option.setValue(6550 + 10*i)
+            port_option.setStyleSheet("border: 2px solid #4FE0DD; background: white;")
             self.port_options.append(port_option)
             temp_h_box.addWidget(port_option)
             hb3_v_box1.addLayout(temp_h_box)
@@ -121,14 +130,16 @@ class MainWindow(QWidget): #This class handles creating the GUI
         self.rate_input = QSpinBox()
         self.rate_input.setRange(1,999)
         self.rate_input.setValue(10)
+        self.rate_input.setStyleSheet("border: 2px solid #4FE0DD; background: white")
         hb3vb2_h_box1.addWidget(self.rate_input)
         hb3vb2_h_box1.addWidget(QLabel("ms"))
         
         
         self.start_stop_btn = QPushButton("Start")
-        self.start_stop_btn.setStyleSheet("background-color: lime;")
+        self.start_stop_btn.setStyleSheet("background-color: lime; font-size: 16px;")
         self.log_area = QTextEdit()
         self.log_area.setReadOnly(True) #output box
+        self.log_area.setStyleSheet("background-color: black; color: white; border: 2px solid #4FE0DD;")
         hb3_v_box2.addWidget(self.log_area)
         hb3_v_box2.addWidget(self.start_stop_btn)
 
@@ -211,6 +222,7 @@ class MainWindow(QWidget): #This class handles creating the GUI
 app = QApplication(sys.argv)
 window = MainWindow()
 window.resize(800, 400)
+window.setStyleSheet("background-color: #AEAFBD")
 window.show()
 sys.exit(app.exec())
         
