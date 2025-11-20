@@ -90,8 +90,11 @@ class MainWindow(QWidget): #This class handles creating the GUI
         self.modules_input = QLineEdit()
         h_box2.addWidget(self.modules_input)
         self.receive_TCP = QPushButton("Receive TCP?")
+        self.receive_TCP.setStyleSheet("background-color: lime;")
         h_box2.addWidget(self.receive_TCP)
         self.TCP_input = QPushButton("Load from packet?")
+        self.TCP_input.setStyleSheet("background-color: #4FE0DD;")
+        
         h_box2.addWidget(self.TCP_input)
         
         
@@ -123,6 +126,7 @@ class MainWindow(QWidget): #This class handles creating the GUI
         
         
         self.start_stop_btn = QPushButton("Start")
+        self.start_stop_btn.setStyleSheet("background-color: lime;")
         self.log_area = QTextEdit()
         self.log_area.setReadOnly(True) #output box
         hb3_v_box2.addWidget(self.log_area)
@@ -157,12 +161,14 @@ class MainWindow(QWidget): #This class handles creating the GUI
                 self.rThread.stop()
             self.receiving = False
             self.receive_TCP.setText("Receive TCP?")
+            self.receive_TCP.setStyleSheet("background-color: lime;")
         else:
             self.rThread = ReceiverThread()
             self.rThread.log.connect(self.log_area.append)
             self.rThread.start()
             self.receiving = True
             self.receive_TCP.setText("Stop Receiving TCP?")
+            self.receive_TCP.setStyleSheet("background-color: red;")
             
         
     def toggle_sending(self): #Pressing the start/stop button calls this method to create a SenderThread to start sending data to the backend.
@@ -172,6 +178,7 @@ class MainWindow(QWidget): #This class handles creating the GUI
                 self.thread.wait()
             self.sending = False
             self.start_stop_btn.setText("Start")
+            self.start_stop_btn.setStyleSheet("background-color: lime;")
         else:
             ports = []
             if(not self.file_checkbox.isChecked() and not self.no_file_checkbox.isChecked()):
@@ -197,6 +204,7 @@ class MainWindow(QWidget): #This class handles creating the GUI
                 self.thread.start()
                 self.sending = True
                 self.start_stop_btn.setText("Stop")
+                self.start_stop_btn.setStyleSheet("background-color: red;")
         
         
             
