@@ -59,7 +59,7 @@ class MainWindow(QWidget): #This class handles creating the GUI
         self.sending = False
         self.receiving = False
         super().__init__()
-        self.setWindowTitle("UDP Simulator")
+        self.setWindowTitle("Sealink Packet Simulator")
         self.thread = None
         self.rThread = None #Receiver Thread
         
