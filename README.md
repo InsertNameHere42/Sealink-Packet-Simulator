@@ -7,8 +7,16 @@ Project Objectives:
     The application will include a GUI for user-friendliness.
     The user will be able to connect to the existing application with an external application and TCP connection. Which will be able to send packets to the UDP applications that decide the modules to select and the rate at which to send them.
 
-Software Structure:
-    The software is structured through multiple files and makes use of inheritance in order to create a cleaner codebase that is easier to manage and read. (not really sure what to put for structure)
+Software Structure and Choices: 
+    UDP Packet Builder Backend:
+        This file is used to handle the creation and sending of UDP packets. It start the packet with the headers, which are constant and cannot be changed with user input. It will then create the payload with the build_payload method has parameters for module number, pattern size, and whether the payload is being built off of a file. After creating the payload, the program will get the size of the payload to insert between the headers and payload data. Finally, the program will do a cyclic redundancy check (CRC) on the packet and append the result to the end of the packet. After the packet has been built, it is send to the local host at a given port.
+    TCP Packet Builder Backend:
+        This file is similar to the UDP packet builder, however, TCP packets are handled slightly differently which caused some change in syntax. How this program differentiates itself is through the contents of the payload. The payload is comprised of two main parts, separated by command codes of 0x40 and 0x41. The command code of 0x40 means that following it will be an array of Booleans converted into bytes which represent which modules the program should select. The command code of 0x41 means that the following data will represent the rate at which the program should create and send UDP packets in milliseconds. After the packet is created, it will send the data to the local host’s port 6551.
+    TCP Packet Receiver Backend:
+        This program will establish a connection with port 6551 and listen for TCP packets and store data based on what the payloads of the packets contained. It will collect this data by parsing through the payloads and look for the command codes to find the list of modules to enable and the rate, which will then be stored for the user.
+    Main GUI:
+        The MainGui file is mostly comprised of code used to build the GUI which isn’t very complex, but quite long. It does, however, contain more than just the GUI-building code. This file makes the most prominent use of object oriented programming (OOP) out of the whole project as it creates instances of the TCP packet receiver in order to take in commands from the TCP packets which can influence the configuration of UDP packets. Additionally, the GUI creates an instance of the UDP packet builder backend as it will take user input in the GUI and build packets based on those inputs. The TCP packet receiver and UDP packet builder are run in their own separate threads so as to not slow down the main GUI.
+
 
 Software Used:
     Python 3.11
