@@ -1,9 +1,6 @@
 import socket
-import time
-import argparse
 import struct
 import zlib
-import os
 
 def write_payload(modules, rate):
     payload_mod = b'\x40' + bytes([int(b) for b in modules])
