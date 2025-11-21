@@ -16,7 +16,7 @@ Software Used:
     Git 2.51.2
     
 Packet Stream Explanation:
-    The UDP application will generate and send UDP packets at a constant, user inputted, rate to select ports.
+    The UDP application will generate and send UDP packets at a constant, user inputted rate to select ports.
     The TCP application will only generate and send a single packet at a time as the program will store the last sent command and does not need a constant stream of them.
 
 External Libraries Used:
