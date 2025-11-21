@@ -22,6 +22,7 @@ Software Used:
     Python 3.11
     Visual Studio Code 1.105.1
     Git 2.51.2
+    Pyinstaller 6.16.0
     
 Packet Stream Explanation:
     The UDP application will generate and send UDP packets at a constant, user inputted rate to select ports.
