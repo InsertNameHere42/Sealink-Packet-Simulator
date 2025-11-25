@@ -140,7 +140,7 @@ class MainWindow(QWidget): #This class handles creating the GUI
         
         
         self.start_stop_btn = QPushButton("Start")
-        self.start_stop_btn.setStyleSheet("background-color: lime; font-size: 16px;")
+        self.start_stop_btn.setStyleSheet("background-color: lime; font-size: 18px;")
         self.log_area = QTextEdit()
         self.log_area.setReadOnly(True) #output box
         self.log_area.setStyleSheet("background-color: black; color: white; border: 2px solid #4FE0DD;")
@@ -176,14 +176,14 @@ class MainWindow(QWidget): #This class handles creating the GUI
                 self.rThread.stop()
             self.receiving = False
             self.receive_TCP.setText("Receive TCP?")
-            self.receive_TCP.setStyleSheet("background-color: lime;")
+            self.receive_TCP.setStyleSheet("background-color: lime; font-size: 16px; color: black")
         else:
             self.rThread = ReceiverThread()
             self.rThread.log.connect(self.log_area.append)
             self.rThread.start()
             self.receiving = True
             self.receive_TCP.setText("Stop Receiving TCP?")
-            self.receive_TCP.setStyleSheet("background-color: red;")
+            self.receive_TCP.setStyleSheet("background-color: red; font-size: 16px; color: black")
             
         
     def toggle_sending(self): #Pressing the start/stop button calls this method to create a SenderThread to start sending data to the backend.
@@ -193,7 +193,7 @@ class MainWindow(QWidget): #This class handles creating the GUI
                 self.thread.wait()
             self.sending = False
             self.start_stop_btn.setText("Start")
-            self.start_stop_btn.setStyleSheet("background-color: lime;")
+            self.start_stop_btn.setStyleSheet("background-color: lime; font-size: 18px; color: black")
         else:
             ports = []
             if(not self.file_checkbox.isChecked() and not self.no_file_checkbox.isChecked()):
@@ -219,7 +219,7 @@ class MainWindow(QWidget): #This class handles creating the GUI
                 self.thread.start()
                 self.sending = True
                 self.start_stop_btn.setText("Stop")
-                self.start_stop_btn.setStyleSheet("background-color: red;")
+                self.start_stop_btn.setStyleSheet("background-color: red; font-size: 18px; color: black")
         
         
          
