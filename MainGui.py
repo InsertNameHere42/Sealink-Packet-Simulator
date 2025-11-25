@@ -88,7 +88,7 @@ class MainWindow(QWidget): #This class handles creating the GUI
         self.pattern_size_input = QSpinBox()
         self.pattern_size_input.setRange(0, 99)
         self.pattern_size_input.setValue(20)
-        self.pattern_size_input.setStyleSheet("border: 2px solid #4FE0DD; background: white; color: black")
+        self.pattern_size_input.setStyleSheet("border: 2px solid #4FE0DD; background: white; color: black; font-size: 18px")
         h_box2.addWidget(self.pattern_size_input)
         self.file_checkbox = QCheckBox(self)
         h_box2.addWidget(self.file_checkbox)
@@ -222,7 +222,7 @@ class MainWindow(QWidget): #This class handles creating the GUI
                 self.start_stop_btn.setStyleSheet("background-color: red;")
         
         
-            
+         
 app = QApplication(sys.argv)
 window = MainWindow()
 window.resize(1200, 600)
