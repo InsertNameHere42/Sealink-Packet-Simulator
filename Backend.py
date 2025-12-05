@@ -66,7 +66,7 @@ class UDPSender:
             for port in self.ports: #Send a packet to every port given
                 self.sock.sendto(packet, ('127.0.0.1', port))
                 print(f"sent packet for modules {self.modules} len={len(packet)})")
-                time.sleep(self.rate/1000) #for the rate of which its printed
+            time.sleep(self.rate/1000) #for the rate of which its printed
             
     def stop(self):
         self.running = False
